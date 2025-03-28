@@ -24,6 +24,8 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	// https://mvnrepository.com/artifact/org.apache.poi/poi
 	implementation("org.apache.poi:poi:4.1.1")
+	// https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
+	implementation("org.apache.poi:poi-ooxml:5.4.0")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
