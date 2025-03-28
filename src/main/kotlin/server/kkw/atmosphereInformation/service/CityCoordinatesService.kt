@@ -5,6 +5,9 @@ import org.apache.poi.ss.usermodel.Sheet
 import org.apache.poi.ss.usermodel.Workbook
 import org.springframework.stereotype.Service
 
+/**
+ * 시도별 위도/경도 데이터를 관리
+ */
 @Service
 class CityCoordinatesService(private val excelService: ExcelService) {
     /**
