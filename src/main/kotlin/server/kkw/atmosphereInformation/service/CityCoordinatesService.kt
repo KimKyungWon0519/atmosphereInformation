@@ -6,7 +6,7 @@ import org.apache.poi.ss.usermodel.Workbook
 import org.springframework.stereotype.Service
 
 /**
- * 시도별 위도/경도 데이터를 관리
+ * 시도별 x, y 데이터를 관리
  */
 @Service
 class CityCoordinatesService(private val excelService: ExcelService) {
@@ -18,7 +18,7 @@ class CityCoordinatesService(private val excelService: ExcelService) {
     }
 
     /**
-     *  city_coordinates의 첫번쨰 시트 데이
+     *  city_coordinates 의 첫번쨰 시트 데이터
      */
     private val sheet: Sheet by lazy {
         workbook.getSheetAt(0)
