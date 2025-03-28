@@ -9,3 +9,11 @@ import org.apache.poi.ss.usermodel.Cell
 fun Cell.isBlank(): Boolean {
     return this.toString().isBlank()
 }
+
+/**
+ * 셀 값을 Double 형으로 변경
+ * @return Cell -> Double
+ */
+fun Cell.toDouble(): Double {
+    return this.toString().toDouble()
+}
