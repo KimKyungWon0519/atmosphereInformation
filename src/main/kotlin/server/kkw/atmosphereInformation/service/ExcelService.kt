@@ -30,22 +30,4 @@ class ExcelService {
 
         return WorkbookFactory.create(resource.inputStream)
     }
-
-    /**
-     * 셀이 비어있는 지 확인
-     * @param cell 셀 데이터
-     * @return 비었으면 true, 값이 존재하면 false
-     */
-    fun isCellBlank(cell: Cell): Boolean {
-        return cell.toString().isBlank()
-    }
-
-    /**
-     * 셀을 Double 자료형으로 변환 후 반한
-     * @param cell 셀 데이터
-     * @return Cell -> Double
-     */
-    fun getDoubleData(cell: Cell): Double {
-        return cell.toString().toDouble()
-    }
 }
