@@ -23,7 +23,7 @@ dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	// https://mvnrepository.com/artifact/org.apache.poi/poi
-	implementation("org.apache.poi:poi:4.1.1")
+	implementation("org.apache.poi:poi:5.4.0")
 	// https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
 	implementation("org.apache.poi:poi-ooxml:5.4.0")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
