@@ -22,7 +22,7 @@ class ExcelService {
     fun read(fileName: String): Workbook {
         val resource = ClassPathResource("data/$fileName")
 
-        if(!resource.exists()) {
+        if (!resource.exists()) {
             throw FileExistsException()
         }
 
@@ -38,5 +38,14 @@ class ExcelService {
      */
     fun isCellBlank(cell: Cell): Boolean {
         return cell.toString().isBlank()
+    }
+
+    /**
+     * 셀을 Double 자료형으로 변환 후 반한
+     * @param cell 셀 데이터
+     * @return Cell -> Double
+     */
+    fun getDoubleData(cell: Cell): Double {
+        return cell.toString().toDouble()
     }
 }
