@@ -32,6 +32,8 @@ dependencies {
 	implementation("com.squareup.okio:okio:3.10.2")
 	// https://square.github.io/okhttp/
 	implementation("com.squareup.okhttp3:okhttp:4.12.0")
+	// https://mvnrepository.com/artifact/com.google.code.gson/gson
+	implementation("com.google.code.gson:gson:2.12.1")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
