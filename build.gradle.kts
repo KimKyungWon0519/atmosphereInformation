@@ -34,6 +34,8 @@ dependencies {
 	implementation("com.squareup.okhttp3:okhttp:4.12.0")
 	// https://mvnrepository.com/artifact/com.google.code.gson/gson
 	implementation("com.google.code.gson:gson:2.12.1")
+	// https://mvnrepository.com/artifact/com.squareup.retrofit2/converter-gson
+	implementation("com.squareup.retrofit2:converter-gson:2.11.0")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
