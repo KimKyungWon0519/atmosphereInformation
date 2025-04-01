@@ -1,0 +1,4 @@
+api:
+  kmaForecast:
+    baseURL: https://example.com/
+    serviceKey: 공공데이터 포털 인증키
