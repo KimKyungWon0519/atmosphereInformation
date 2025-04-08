@@ -15,17 +15,14 @@ class KmaForecastService(private val kmaForecastApi: KmaForecastApi) {
      * @param nx 예보지점 X 좌표
      * @param ny 예보지점 Y 좌표
      */
-    fun getUltraSrtNcst(
+    suspend fun getUltraSrtNcst(
         pageNo: Int,
         baseData: Long,
         baseTime: Int,
         nx: Short,
         ny: Short,
-    ): KmaForecastResponse? {
-        val response = kmaForecastApi.getUltraSrtNcst(
+    ): KmaForecastResponse? =
+        kmaForecastApi.getUltraSrtNcst(
             pageNo, baseData, baseTime, nx, ny
-        ).execute()
-
-        return if (response.isSuccessful) response.body()!! else null
-    }
+        )
 }
