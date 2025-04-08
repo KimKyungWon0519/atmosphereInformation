@@ -21,6 +21,8 @@ interface KmaForecastApi {
      * @param baseTime 발표시각
      * @param nx 예보지점 X 좌표
      * @param ny 예보지점 Y 좌표
+     *
+     * @return [KmaForecastResponse]
      */
     @GET("getUltraSrtNcst")
     suspend fun getUltraSrtNcst(

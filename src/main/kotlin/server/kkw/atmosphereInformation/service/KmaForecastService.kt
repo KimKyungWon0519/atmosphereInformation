@@ -3,6 +3,9 @@ package server.kkw.atmosphereInformation.service
 import org.springframework.stereotype.Service
 import server.kkw.atmosphereInformation.model.KmaForecastResponse
 
+/**
+ * [KmaForecastApi]를 호출하는 서비스
+ */
 @Service
 class KmaForecastService(private val kmaForecastApi: KmaForecastApi) {
     /**
@@ -14,6 +17,8 @@ class KmaForecastService(private val kmaForecastApi: KmaForecastApi) {
      * @param baseTime 발표시각
      * @param nx 예보지점 X 좌표
      * @param ny 예보지점 Y 좌표
+     *
+     * @return [KmaForecastResponse]
      */
     suspend fun getUltraSrtNcst(
         pageNo: Int,

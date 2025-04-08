@@ -29,6 +29,7 @@ class CityCoordinatesService(private val excelService: ExcelService) {
 
     /**
      * 모든 시 좌표 값을 가져옴
+     *
      * @return 중복 값을 제거 모든 시의 [CityCoordinate] 데이터
      */
     fun getAllCitiesCoord(): Set<CityCoordinate> {
