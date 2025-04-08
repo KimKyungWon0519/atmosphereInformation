@@ -6,7 +6,7 @@ import org.apache.poi.ss.usermodel.Workbook
 import org.springframework.stereotype.Service
 import server.kkw.atmosphereInformation.model.CityCoordinate
 import server.kkw.atmosphereInformation.utils.isBlank
-import server.kkw.atmosphereInformation.utils.toDouble
+import server.kkw.atmosphereInformation.utils.toShort
 
 /**
  * 시도별 x, y 데이터를 관리
@@ -41,7 +41,7 @@ class CityCoordinatesService(private val excelService: ExcelService) {
         filterData.forEach { row ->
             cities.add(
                 CityCoordinate(
-                    row.getCell(2).toString(), row.getCell(5).toDouble(), row.getCell(6).toDouble()
+                    row.getCell(2).toString(), row.getCell(5).toShort(), row.getCell(6).toShort()
                 )
             )
         }

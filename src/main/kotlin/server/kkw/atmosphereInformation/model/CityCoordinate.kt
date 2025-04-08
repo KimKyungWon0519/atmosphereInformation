@@ -6,4 +6,4 @@ package server.kkw.atmosphereInformation.model
  * @property x x 좌표
  * @property y y 좌표
  */
-data class CityCoordinate(val name: String, val x: Double, val y: Double)
+data class CityCoordinate(val name: String, val x: Short, val y: Short)

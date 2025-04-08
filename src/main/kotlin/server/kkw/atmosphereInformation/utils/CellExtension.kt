@@ -12,8 +12,8 @@ fun Cell.isBlank(): Boolean {
 
 /**
  * 셀 값을 Double 형으로 변경
- * @return Cell -> Double
+ * @return Cell -> Short
  */
-fun Cell.toDouble(): Double {
-    return this.toString().toDouble()
+fun Cell.toShort(): Short {
+    return this.toString().substringBefore('.').toShort()
 }
