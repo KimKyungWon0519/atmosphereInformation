@@ -21,7 +21,7 @@ class KmaForecastService(private val kmaForecastApi: KmaForecastApi) {
         baseTime: Int,
         nx: Short,
         ny: Short,
-    ): KmaForecastResponse? =
+    ): KmaForecastResponse =
         kmaForecastApi.getUltraSrtNcst(
             pageNo, baseData, baseTime, nx, ny
         )
