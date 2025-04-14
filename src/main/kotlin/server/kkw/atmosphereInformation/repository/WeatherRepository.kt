@@ -1,10 +1,14 @@
 package server.kkw.atmosphereInformation.repository
 
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import org.springframework.stereotype.Repository
 import server.kkw.atmosphereInformation.mapper.toCityWeatherObservation
 import server.kkw.atmosphereInformation.model.CityWeatherObservation
 import server.kkw.atmosphereInformation.service.CityCoordinatesService
 import server.kkw.atmosphereInformation.service.KmaForecastService
+import kotlin.system.measureTimeMillis
 
 /**
  * 시도 좌표값을 이용하여 날씨 API 호출
@@ -22,22 +26,22 @@ class WeatherRepository(
      *
      * @return Set<[CityWeatherObservation]>
      */
-    suspend fun getAllCityWeather(baseData: Long, baseTime: Int): Set<CityWeatherObservation> {
+    suspend fun getAllCityWeather(baseData: Long, baseTime: Int): Set<CityWeatherObservation> = runBlocking {
         val cityCoordinates = cityCoordinatesService.getAllCitiesCoord()
-        val cityWeatherObservations = mutableSetOf<CityWeatherObservation>()
+        val cityWeatherObservations = cityCoordinates.map {
+            async {
+                val kmaForecastResponse = kmaForecastService.getUltraSrtNcst(
+                    baseData = baseData,
+                    baseTime = baseTime,
+                    pageNo = 1,
+                    nx = it.x,
+                    ny = it.y
+                )
 
-        cityCoordinates.forEach {
-            val kmaForecastResponse = kmaForecastService.getUltraSrtNcst(
-                baseData = baseData,
-                baseTime = baseTime,
-                pageNo = 1,
-                nx = it.x,
-                ny = it.y
-            )
+                kmaForecastResponse.response.body.items.toCityWeatherObservation(it.name)
+            }
+        }.awaitAll().toSet()
 
-            cityWeatherObservations.add(kmaForecastResponse.response.body.items.toCityWeatherObservation(it.name))
-        }
-
-        return cityWeatherObservations
+        return@runBlocking cityWeatherObservations
     }
 }
