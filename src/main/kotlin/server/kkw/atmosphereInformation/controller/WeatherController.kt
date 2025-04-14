@@ -1,10 +1,36 @@
 package server.kkw.atmosphereInformation.controller
 
+import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import server.kkw.atmosphereInformation.model.CityWeatherObservation
+import server.kkw.atmosphereInformation.repository.WeatherRepository
+import server.kkw.atmosphereInformation.service.KmaForecastService
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.Date
+import java.util.Objects
 
 @RestController
-@RequestMapping("/v1/weather")
-class WeatherController {
+@RequestMapping("/v1/weather/")
+class WeatherController(private val weatherRepository: WeatherRepository) {
+    @GetMapping("city/all")
+    suspend fun allCityWeatherNow(): ResponseEntity<Map<String, Any>> {
+        val dateTime = LocalDateTime.now()
+
+        val cityWeatherObservations = weatherRepository.getAllCityWeather(
+            baseData = DateTimeFormatter.ofPattern("yyyyMMdd").format(dateTime).toLong(),
+            baseTime = DateTimeFormatter.ofPattern("HHmm").format(dateTime).toInt()
+        )
+
+        return ResponseEntity.ok(mapOf(
+            "time" to dateTime,
+            "status" to 200,
+            "data" to cityWeatherObservations
+        ))
+    }
 }
