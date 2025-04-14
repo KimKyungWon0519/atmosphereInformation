@@ -49,4 +49,19 @@ class CityCoordinatesService(private val excelService: ExcelService) {
 
         return cities
     }
+
+    /**
+     * 특정 시 좌표 값을 가져옴
+     *
+     * @return 특정 시의 [CityCoordinate] 데이터
+     */
+    fun getCityCoord(name: String): CityCoordinate {
+        val rowData: Row = sheet.single { row ->
+            row.getCell(3).isBlank() && row.getCell(2).toString().compareTo(name) == 0
+        }
+
+        return CityCoordinate(
+            rowData.getCell(2).toString(), rowData.getCell(5).toShort(), rowData.getCell(6).toShort(),
+        )
+    }
 }

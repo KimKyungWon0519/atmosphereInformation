@@ -44,4 +44,27 @@ class WeatherRepository(
 
         return@runBlocking cityWeatherObservations
     }
+
+    /**
+     * 특정 시의 날씨 데이터를 가져옴
+     *
+     * @param name 시 이름
+     * @param baseData 발표일자
+     * @param baseTime 발표시각
+     *
+     * @return [CityWeatherObservation]
+     */
+    suspend fun getCityWeather(name: String, baseData: Long, baseTime: Int): CityWeatherObservation {
+        val cityCoordinate = cityCoordinatesService.getCityCoord(name)
+
+        val kmaForecastResponse = kmaForecastService.getUltraSrtNcst(
+            baseData = baseData,
+            baseTime = baseTime,
+            pageNo = 1,
+            nx = cityCoordinate.x,
+            ny = cityCoordinate.y
+        )
+
+        return kmaForecastResponse.response.body.items.toCityWeatherObservation(cityCoordinate.name)
+    }
 }
