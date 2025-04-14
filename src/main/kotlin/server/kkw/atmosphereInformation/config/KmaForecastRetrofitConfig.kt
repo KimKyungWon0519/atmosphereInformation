@@ -21,7 +21,7 @@ class KmaForecastRetrofitConfig {
     }
 
     @Bean
-    fun retorfit(okHttpClient: OkHttpClient): Retrofit {
+    fun retrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder().baseUrl(baseURL).addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient).build()
     }
