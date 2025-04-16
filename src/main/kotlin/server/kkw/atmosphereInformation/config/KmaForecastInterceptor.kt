@@ -11,6 +11,9 @@ class KmaForecastInterceptor: Interceptor {
     private lateinit var serviceKey: String
     private var dataType: String = "JSON"
 
+    /**
+     * 호출 URL에 serviceKey과 dataType을 추가
+     */
     override fun intercept(chain: Interceptor.Chain): Response {
         val originRequest = chain.request()
 

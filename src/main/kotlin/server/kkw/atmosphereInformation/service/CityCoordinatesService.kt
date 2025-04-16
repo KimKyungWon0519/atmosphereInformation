@@ -30,7 +30,10 @@ class CityCoordinatesService(private val excelService: ExcelService) {
     /**
      * 모든 시 좌표 값을 가져옴
      *
-     * @return 중복 값을 제거 모든 시의 [CityCoordinate] 데이터
+     * @return
+     * Set<[CityCoordinate]>
+     *
+     * 중복 값을 제거 모든 시의 [CityCoordinate] 데이터
      */
     fun getAllCitiesCoord(): Set<CityCoordinate> {
         val cities: MutableSet<CityCoordinate> = mutableSetOf()
@@ -51,9 +54,12 @@ class CityCoordinatesService(private val excelService: ExcelService) {
     }
 
     /**
-     * 특정 시 좌표 값을 가져옴
+     * 시도 이름을 이용하여 특정 시 좌표 값을 가져옴
      *
-     * @return 특정 시의 [CityCoordinate] 데이터
+     * @return
+     * [CityCoordinate]
+     *
+     * 특정 시의 [CityCoordinate] 데이터
      */
     fun getCityCoord(name: String): CityCoordinate {
         val rowData: Row = sheet.single { row ->

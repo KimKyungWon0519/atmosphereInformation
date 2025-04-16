@@ -22,7 +22,8 @@ class WeatherController(private val weatherRepository: WeatherRepository) {
     /**
      * 모든 시의 날씨 데이터를 반환
      *
-     * @return ResponseEntity<Map<String, Any>>
+     * @return
+     * ResponseEntity<Map<String, Any>>
      */
     @GetMapping("city/all")
     suspend fun allCityWeatherNow(): ResponseEntity<Map<String, Any>> {
@@ -47,7 +48,8 @@ class WeatherController(private val weatherRepository: WeatherRepository) {
      *
      * @param name 특정 시 이름
      *
-     * @return ResponseEntity<Map<String, Any>>
+     * @return
+     * ResponseEntity<Map<String, Any>>
      */
     @GetMapping("city/{name}")
     suspend fun cityWeatherNow(
