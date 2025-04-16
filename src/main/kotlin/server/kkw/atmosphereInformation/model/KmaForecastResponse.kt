@@ -3,11 +3,30 @@ package server.kkw.atmosphereInformation.model
 /**
  * 기상청 단기예보 API 응답값 루트 모델
  * 자세한 변수 값은 [기상청_단기예보 ((구)_동네예보) 조회서비스](https://www.data.go.kr/tcs/dss/selectApiDataDetailView.do?publicDataPk=15084084)의 기능명세서 참고
+ *
  * @property [Response]
  */
 data class KmaForecastResponse(
     val response: Response,
-)
+) {
+    /**
+     * Response의 header getter
+     */
+    val header: Header
+        get() = response.header
+
+    /**
+     *  Response의 body getter
+     */
+    val body: Body
+        get() = response.body
+
+    /**
+     * response의 원본 string 값
+     */
+    val rawResponse: String
+        get() = response.toString()
+}
 
 /**
  * @property [Header]

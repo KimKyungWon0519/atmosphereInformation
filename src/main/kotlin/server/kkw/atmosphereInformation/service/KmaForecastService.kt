@@ -1,6 +1,9 @@
 package server.kkw.atmosphereInformation.service
 
+import okhttp3.ResponseBody.Companion.toResponseBody
 import org.springframework.stereotype.Service
+import retrofit2.HttpException
+import retrofit2.Response
 import server.kkw.atmosphereInformation.model.KmaForecastResponse
 
 /**
@@ -18,7 +21,10 @@ class KmaForecastService(private val kmaForecastApi: KmaForecastApi) {
      * @param nx 예보지점 X 좌표
      * @param ny 예보지점 Y 좌표
      *
-     * @return [KmaForecastResponse]
+     * @return
+     * Result<[KmaForecastResponse]>
+     *
+     * 특정 좌표의 초단기실황값. API 에서 오류 발생 시 Exception과 함께 반환
      */
     suspend fun getUltraSrtNcst(
         pageNo: Int,
@@ -26,8 +32,23 @@ class KmaForecastService(private val kmaForecastApi: KmaForecastApi) {
         baseTime: Int,
         nx: Short,
         ny: Short,
-    ): KmaForecastResponse =
-        kmaForecastApi.getUltraSrtNcst(
-            pageNo, baseData, baseTime, nx, ny
-        )
+    ): Result<KmaForecastResponse> {
+        try {
+            val kmaForecastResponse = kmaForecastApi.getUltraSrtNcst(
+                pageNo, baseData, baseTime, nx, ny
+            )
+
+            if (kmaForecastResponse.header.resultCode != "00") {
+                throw HttpException(
+                    Response.error<KmaForecastResponse>(
+                        400, kmaForecastResponse.rawResponse.toResponseBody()
+                    )
+                )
+            }
+
+            return Result.success(kmaForecastResponse)
+        } catch (e: Exception) {
+            return Result.failure(e)
+        }
+    }
 }
