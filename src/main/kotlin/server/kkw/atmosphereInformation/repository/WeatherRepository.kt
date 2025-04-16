@@ -20,7 +20,7 @@ class WeatherRepository(
     /**
      * 모든 시의 날씨 데이터를 가져옴
      *
-     * @param baseData 발표일자
+     * @param baseDate 발표일자
      * @param baseTime 발표시각
      *
      * @return
@@ -28,12 +28,12 @@ class WeatherRepository(
      *
      * 도시 별 날씨 측정값, 특정 도시의 데이터가 없는 경우 해당 도시만 observation를 []처리
      */
-    suspend fun getAllCityWeather(baseData: Long, baseTime: Int): Set<CityWeatherObservation> = runBlocking {
+    suspend fun getAllCityWeather(baseDate: Long, baseTime: Int): Set<CityWeatherObservation> = runBlocking {
         val cityCoordinates = cityCoordinatesService.getAllCitiesCoord()
         val cityWeatherObservations = cityCoordinates.map {
             async {
                 getWeather(
-                    cityCoordinate = it, baseData = baseData, baseTime = baseTime
+                    cityCoordinate = it, baseDate = baseDate, baseTime = baseTime
                 )
             }
         }.awaitAll().toSet()
@@ -45,7 +45,7 @@ class WeatherRepository(
      * 특정 시의 날씨 데이터를 가져옴
      *
      * @param name 시 이름
-     * @param baseData 발표일자
+     * @param baseDate 발표일자
      * @param baseTime 발표시각
      *
      * @return
@@ -54,12 +54,12 @@ class WeatherRepository(
      * 특정 도시의 날씨 측정값, 특정 도시의 데이터가 없는 경우 observation를 []처리
      */
     suspend fun getCityWeather(
-        name: String, baseData: Long, baseTime: Int
+        name: String, baseDate: Long, baseTime: Int
     ): CityWeatherObservation {
         val cityCoordinate = cityCoordinatesService.getCityCoord(name)
 
         return getWeather(
-            cityCoordinate = cityCoordinate, baseData = baseData, baseTime = baseTime
+            cityCoordinate = cityCoordinate, baseDate = baseDate, baseTime = baseTime
         )
     }
 
@@ -67,7 +67,7 @@ class WeatherRepository(
      * 도시의 날씨 데이터 API 결과를 처리하는 함수
      *
      * @param cityCoordinate 시도 좌표 모델
-     * @param baseData 발표일자
+     * @param baseDate 발표일자
      * @param baseTime 발표시각
      *
      * @return
@@ -76,10 +76,10 @@ class WeatherRepository(
      * 전달받은 좌표의 날씨 측정값, 데이터가 없는 경우 observation를 []처리
      */
     private suspend fun getWeather(
-        cityCoordinate: CityCoordinate, baseData: Long, baseTime: Int
+        cityCoordinate: CityCoordinate, baseDate: Long, baseTime: Int
     ): CityWeatherObservation {
         val result = kmaForecastService.getUltraSrtNcst(
-            baseData = baseData, baseTime = baseTime, pageNo = 1, nx = cityCoordinate.x, ny = cityCoordinate.y
+            baseDate = baseDate, baseTime = baseTime, pageNo = 1, nx = cityCoordinate.x, ny = cityCoordinate.y
         )
 
         return if (result.isSuccess && result.getOrNull() != null) {

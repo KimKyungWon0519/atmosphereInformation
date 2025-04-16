@@ -16,7 +16,7 @@ class KmaForecastService(private val kmaForecastApi: KmaForecastApi) {
      *
      * X, Y 좌표는 별첨 엑셀 좌표 확인
      * @param pageNo 한 페이지 결과
-     * @param baseData 발표일자
+     * @param baseDate 발표일자
      * @param baseTime 발표시각
      * @param nx 예보지점 X 좌표
      * @param ny 예보지점 Y 좌표
@@ -28,14 +28,14 @@ class KmaForecastService(private val kmaForecastApi: KmaForecastApi) {
      */
     suspend fun getUltraSrtNcst(
         pageNo: Int,
-        baseData: Long,
+        baseDate: Long,
         baseTime: Int,
         nx: Short,
         ny: Short,
     ): Result<KmaForecastResponse> {
         try {
             val kmaForecastResponse = kmaForecastApi.getUltraSrtNcst(
-                pageNo, baseData, baseTime, nx, ny
+                pageNo, baseDate, baseTime, nx, ny
             )
 
             if (kmaForecastResponse.header.resultCode != "00") {
