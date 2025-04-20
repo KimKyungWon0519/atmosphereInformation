@@ -28,8 +28,8 @@ class KmaForecastService(private val kmaForecastApi: KmaForecastApi) {
      */
     suspend fun getUltraSrtNcst(
         pageNo: Int,
-        baseDate: Long,
-        baseTime: Int,
+        baseDate: String,
+        baseTime: String,
         nx: Short,
         ny: Short,
     ): Result<KmaForecastResponse> {

@@ -1,7 +1,5 @@
 package server.kkw.atmosphereInformation.service
 
-import retrofit2.Call
-import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 import server.kkw.atmosphereInformation.model.KmaForecastResponse
@@ -27,8 +25,8 @@ interface KmaForecastApi {
     @GET("getUltraSrtNcst")
     suspend fun getUltraSrtNcst(
         @Query("pageNo") pageNo: Int,
-        @Query("base_date") baseDate: Long,
-        @Query("base_time") baseTime: Int,
+        @Query("base_date") baseDate: String,
+        @Query("base_time") baseTime: String,
         @Query("nx") nx: Short,
         @Query("ny") ny: Short,
     ): KmaForecastResponse

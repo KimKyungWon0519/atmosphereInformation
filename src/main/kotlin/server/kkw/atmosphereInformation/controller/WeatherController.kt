@@ -23,8 +23,8 @@ class WeatherController(private val weatherRepository: WeatherRepository) {
         val dateTime = LocalDateTime.now()
 
         val cityWeatherObservations = weatherRepository.getAllMetropolitanNowWeather(
-            baseDate = DateTimeFormatter.ofPattern("yyyyMMdd").format(dateTime).toLong(),
-            baseTime = DateTimeFormatter.ofPattern("HHmm").format(dateTime).toInt()
+            baseDate = DateTimeFormatter.ofPattern("yyyyMMdd").format(dateTime),
+            baseTime = DateTimeFormatter.ofPattern("HHmm").format(dateTime)
         )
 
         return ResponseEntity.ok(
@@ -53,8 +53,8 @@ class WeatherController(private val weatherRepository: WeatherRepository) {
 
         val cityWeatherObservations = weatherRepository.getCityWeather(
             name = name,
-            baseDate = DateTimeFormatter.ofPattern("yyyyMMdd").format(dateTime).toLong(),
-            baseTime = DateTimeFormatter.ofPattern("HHmm").format(dateTime).toInt()
+            baseDate = DateTimeFormatter.ofPattern("yyyyMMdd").format(dateTime),
+            baseTime = DateTimeFormatter.ofPattern("HHmm").format(dateTime)
         )
 
         return ResponseEntity.ok(

@@ -29,18 +29,19 @@ class WeatherRepository(
      *
      * 각 광역지방자치단체 실시간 날씨 측정값, 특정 광역지방자치단체의 날씨 데이터가 없는 경우 observation를 []처리
      */
-    suspend fun getAllMetropolitanNowWeather(baseDate: Long, baseTime: Int): Set<WeatherObservation> = runBlocking {
-        val localGovernmentCoordinates = localGovernmentCoordinatesService.getAllLocalGovernmentCoord()
-        val weatherObservations = localGovernmentCoordinates.map {
-            async {
-                getNowWeather(
-                    localGovernmentCoordinate = it, baseDate = baseDate, baseTime = baseTime
-                )
-            }
-        }.awaitAll().toSet()
+    suspend fun getAllMetropolitanNowWeather(baseDate: String, baseTime: String): Set<WeatherObservation> =
+        runBlocking {
+            val localGovernmentCoordinates = localGovernmentCoordinatesService.getAllLocalGovernmentCoord()
+            val weatherObservations = localGovernmentCoordinates.map {
+                async {
+                    getNowWeather(
+                        localGovernmentCoordinate = it, baseDate = baseDate, baseTime = baseTime
+                    )
+                }
+            }.awaitAll().toSet()
 
-        return@runBlocking weatherObservations
-    }
+            return@runBlocking weatherObservations
+        }
 
     /**
      * 특정 시의 날씨 데이터를 가져옴
@@ -56,7 +57,7 @@ class WeatherRepository(
      */
     // TODO: 함수 이름 변경 및 문서 내용 변경
     suspend fun getCityWeather(
-        name: String, baseDate: Long, baseTime: Int
+        name: String, baseDate: String, baseTime: String
     ): WeatherObservation {
         val cityCoordinate = localGovernmentCoordinatesService.getCityCoord(name)
 
@@ -78,7 +79,7 @@ class WeatherRepository(
      * 전달받은 좌표의 날씨 측정값, 데이터가 없는 경우 observation를 []처리
      */
     private suspend fun getNowWeather(
-        localGovernmentCoordinate: LocalGovernmentCoordinate, baseDate: Long, baseTime: Int
+        localGovernmentCoordinate: LocalGovernmentCoordinate, baseDate: String, baseTime: String
     ): WeatherObservation {
         val result = kmaForecastService.getUltraSrtNcst(
             baseDate = baseDate,
