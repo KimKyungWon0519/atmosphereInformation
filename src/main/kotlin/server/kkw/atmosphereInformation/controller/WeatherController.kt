@@ -13,16 +13,16 @@ import java.time.format.DateTimeFormatter
 @RequestMapping("/v1/weather/")
 class WeatherController(private val weatherRepository: WeatherRepository) {
     /**
-     * 모든 시의 날씨 데이터를 반환
+     * 광역지방자치단체 실시간 날씨 데이터를 반환
      *
      * @return
      * ResponseEntity<Map<String, Any>>
      */
-    @GetMapping("city/all")
-    suspend fun allCityWeatherNow(): ResponseEntity<Map<String, Any>> {
+    @GetMapping("metropolitan/all/now")
+    suspend fun allMetropolitanNowWeather(): ResponseEntity<Map<String, Any>> {
         val dateTime = LocalDateTime.now()
 
-        val cityWeatherObservations = weatherRepository.getAllCityWeather(
+        val cityWeatherObservations = weatherRepository.getAllMetropolitanNowWeather(
             baseDate = DateTimeFormatter.ofPattern("yyyyMMdd").format(dateTime).toLong(),
             baseTime = DateTimeFormatter.ofPattern("HHmm").format(dateTime).toInt()
         )
@@ -44,6 +44,7 @@ class WeatherController(private val weatherRepository: WeatherRepository) {
      * @return
      * ResponseEntity<Map<String, Any>>
      */
+    // TODO: 함수 이름 변경 및 문서 내용 변경
     @GetMapping("city/{name}")
     suspend fun cityWeatherNow(
         @PathVariable name: String

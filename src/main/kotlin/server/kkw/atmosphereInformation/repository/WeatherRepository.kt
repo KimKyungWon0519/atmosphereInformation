@@ -1,44 +1,45 @@
 package server.kkw.atmosphereInformation.repository
 
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.runBlocking
 import org.springframework.stereotype.Repository
-import server.kkw.atmosphereInformation.mapper.toCityWeatherObservation
-import server.kkw.atmosphereInformation.model.CityCoordinate
-import server.kkw.atmosphereInformation.model.CityWeatherObservation
-import server.kkw.atmosphereInformation.service.CityCoordinatesService
+import server.kkw.atmosphereInformation.mapper.toWeatherObservation
+import server.kkw.atmosphereInformation.model.LocalGovernmentCoordinate
+import server.kkw.atmosphereInformation.model.WeatherObservation
 import server.kkw.atmosphereInformation.service.KmaForecastService
+import server.kkw.atmosphereInformation.service.LocalGovernmentCoordinatesService
 
 /**
- * 시도 좌표값을 이용하여 날씨 API 호출
+ * 지방자치단체의 좌표값을 이용하여 날씨 API 호출
  */
 @Repository
 class WeatherRepository(
-    private val kmaForecastService: KmaForecastService, private val cityCoordinatesService: CityCoordinatesService
+    private val kmaForecastService: KmaForecastService,
+    private val localGovernmentCoordinatesService: LocalGovernmentCoordinatesService
 ) {
     /**
-     * 모든 시의 날씨 데이터를 가져옴
+     * 광역지방자치단체의 실시간 날씨 데이터를 가져옴
      *
      * @param baseDate 발표일자
      * @param baseTime 발표시각
      *
      * @return
-     * Set<[CityWeatherObservation]>
+     * Set<[WeatherObservation]>
      *
-     * 도시 별 날씨 측정값, 특정 도시의 데이터가 없는 경우 해당 도시만 observation를 []처리
+     * 각 광역지방자치단체 실시간 날씨 측정값, 특정 광역지방자치단체의 날씨 데이터가 없는 경우 observation를 []처리
      */
-    suspend fun getAllCityWeather(baseDate: Long, baseTime: Int): Set<CityWeatherObservation> = runBlocking {
-        val cityCoordinates = cityCoordinatesService.getAllCitiesCoord()
-        val cityWeatherObservations = cityCoordinates.map {
+    suspend fun getAllMetropolitanNowWeather(baseDate: Long, baseTime: Int): Set<WeatherObservation> = runBlocking {
+        val localGovernmentCoordinates = localGovernmentCoordinatesService.getAllLocalGovernmentCoord()
+        val weatherObservations = localGovernmentCoordinates.map {
             async {
-                getWeather(
-                    cityCoordinate = it, baseDate = baseDate, baseTime = baseTime
+                getNowWeather(
+                    localGovernmentCoordinate = it, baseDate = baseDate, baseTime = baseTime
                 )
             }
         }.awaitAll().toSet()
 
-        return@runBlocking cityWeatherObservations
+        return@runBlocking weatherObservations
     }
 
     /**
@@ -49,45 +50,50 @@ class WeatherRepository(
      * @param baseTime 발표시각
      *
      * @return
-     * [CityWeatherObservation]
+     * [WeatherObservation]
      *
      * 특정 도시의 날씨 측정값, 특정 도시의 데이터가 없는 경우 observation를 []처리
      */
+    // TODO: 함수 이름 변경 및 문서 내용 변경
     suspend fun getCityWeather(
         name: String, baseDate: Long, baseTime: Int
-    ): CityWeatherObservation {
-        val cityCoordinate = cityCoordinatesService.getCityCoord(name)
+    ): WeatherObservation {
+        val cityCoordinate = localGovernmentCoordinatesService.getCityCoord(name)
 
-        return getWeather(
-            cityCoordinate = cityCoordinate, baseDate = baseDate, baseTime = baseTime
+        return getNowWeather(
+            localGovernmentCoordinate = cityCoordinate, baseDate = baseDate, baseTime = baseTime
         )
     }
 
     /**
-     * 도시의 날씨 데이터 API 결과를 처리하는 함수
+     * 지방자치단체의 실시간 날씨 데이터 API 결과를 처리하는 함수
      *
-     * @param cityCoordinate 시도 좌표 모델
+     * @param localGovernmentCoordinate 시도 좌표 모델
      * @param baseDate 발표일자
      * @param baseTime 발표시각
      *
      * @return
-     * [CityWeatherObservation]
+     * [WeatherObservation]
      *
      * 전달받은 좌표의 날씨 측정값, 데이터가 없는 경우 observation를 []처리
      */
-    private suspend fun getWeather(
-        cityCoordinate: CityCoordinate, baseDate: Long, baseTime: Int
-    ): CityWeatherObservation {
+    private suspend fun getNowWeather(
+        localGovernmentCoordinate: LocalGovernmentCoordinate, baseDate: Long, baseTime: Int
+    ): WeatherObservation {
         val result = kmaForecastService.getUltraSrtNcst(
-            baseDate = baseDate, baseTime = baseTime, pageNo = 1, nx = cityCoordinate.x, ny = cityCoordinate.y
+            baseDate = baseDate,
+            baseTime = baseTime,
+            pageNo = 1,
+            nx = localGovernmentCoordinate.x,
+            ny = localGovernmentCoordinate.y
         )
 
         return if (result.isSuccess && result.getOrNull() != null) {
             val kmaForecastResponse = result.getOrNull()!!
 
-            kmaForecastResponse.body.items.toCityWeatherObservation(cityCoordinate.name)
+            kmaForecastResponse.body.items.toWeatherObservation(localGovernmentCoordinate.name)
         } else {
-            CityWeatherObservation(cityCoordinate.name, setOf())
+            WeatherObservation(localGovernmentCoordinate.name, setOf())
         }
     }
 }
