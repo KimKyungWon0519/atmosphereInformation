@@ -1,10 +1,6 @@
 package server.kkw.atmosphereInformation.mapper
 
-import server.kkw.atmosphereInformation.model.WeatherObservation
-import server.kkw.atmosphereInformation.model.Item
-import server.kkw.atmosphereInformation.model.Items
-import server.kkw.atmosphereInformation.model.KmaForecastResponse
-import server.kkw.atmosphereInformation.model.Observation
+import server.kkw.atmosphereInformation.model.*
 
 /**
  * [KmaForecastResponse]의 [Items]를 [WeatherObservation]로 변환
@@ -16,16 +12,5 @@ import server.kkw.atmosphereInformation.model.Observation
 fun Items.toWeatherObservation(name: String): WeatherObservation =
     WeatherObservation(
         name,
-        item.map { it.toObservation() }.toSet()
-    )
-
-/**
- * [Items]의 [Item]을 [WeatherObservation]로 변환
- *
- * @return [WeatherObservation]
- */
-fun Item.toObservation(): Observation =
-    Observation(
-        category,
-        obsrValue.toDouble()
+        item.associate { it.category to it.obsrValue }
     )

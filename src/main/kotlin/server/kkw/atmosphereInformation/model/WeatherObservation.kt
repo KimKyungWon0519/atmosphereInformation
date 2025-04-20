@@ -9,5 +9,5 @@ import kotlinx.serialization.Serializable
  * @property observation 날씨 실황 값 모음
  */
 @Serializable
-data class WeatherObservation(val name: String, val observation: Set<Observation>)
+data class WeatherObservation(val name: String, val observation: Map<String, String>)
 

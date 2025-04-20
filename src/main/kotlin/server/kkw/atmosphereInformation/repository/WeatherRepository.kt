@@ -27,7 +27,7 @@ class WeatherRepository(
      * @return
      * Set<[WeatherObservation]>
      *
-     * 각 광역지방자치단체 실시간 날씨 측정값, 특정 광역지방자치단체의 날씨 데이터가 없는 경우 observation를 []처리
+     * 각 광역지방자치단체 실시간 날씨 측정값, 특정 광역지방자치단체의 날씨 데이터가 없는 경우 observation를 {}처리
      */
     suspend fun getAllMetropolitanNowWeather(baseDate: String, baseTime: String): Set<WeatherObservation> =
         runBlocking {
@@ -53,7 +53,7 @@ class WeatherRepository(
      * @return
      * [WeatherObservation]
      *
-     * 특정 도시의 날씨 측정값, 특정 도시의 데이터가 없는 경우 observation를 []처리
+     * 특정 도시의 날씨 측정값, 특정 도시의 데이터가 없는 경우 observation를 {}처리
      */
     // TODO: 함수 이름 변경 및 문서 내용 변경
     suspend fun getCityWeather(
@@ -76,7 +76,7 @@ class WeatherRepository(
      * @return
      * [WeatherObservation]
      *
-     * 전달받은 좌표의 날씨 측정값, 데이터가 없는 경우 observation를 []처리
+     * 전달받은 좌표의 날씨 측정값, 데이터가 없는 경우 observation를 {}처리
      */
     private suspend fun getNowWeather(
         localGovernmentCoordinate: LocalGovernmentCoordinate, baseDate: String, baseTime: String
@@ -94,7 +94,7 @@ class WeatherRepository(
 
             kmaForecastResponse.body.items.toWeatherObservation(localGovernmentCoordinate.name)
         } else {
-            WeatherObservation(localGovernmentCoordinate.name, setOf())
+            WeatherObservation(localGovernmentCoordinate.name, mapOf())
         }
     }
 }
