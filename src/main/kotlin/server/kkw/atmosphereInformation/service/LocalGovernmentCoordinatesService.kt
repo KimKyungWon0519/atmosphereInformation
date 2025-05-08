@@ -35,7 +35,7 @@ class LocalGovernmentCoordinatesService(private val excelService: ExcelService) 
      *
      * 중복 제거된 모든 광역지방자치단체 데이터
      */
-    fun getAllMetropolitan(): Set<String> {
+    fun getAllMetropolitanNames(): Set<String> {
         val filterData: List<Row> = sheet.filter { row ->
             row.getCell(3).isBlank()
         }
