@@ -28,6 +28,13 @@ class LocalGovernmentCoordinatesService(private val excelService: ExcelService) 
     }
 
     /**
+     * 모든 광역지방자치단체의 이름을 반환
+     */
+    fun getAllMetropolitan() {
+
+    }
+
+    /**
      * 꽝역지방자치단체 좌표 값을 가져옴
      *
      * @return
