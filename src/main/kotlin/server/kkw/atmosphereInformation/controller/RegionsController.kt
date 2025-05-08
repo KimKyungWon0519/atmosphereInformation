@@ -10,4 +10,11 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/v1/regions")
 class RegionsController {
+    /**
+     * 모든 광역지방자치단체 이름을 반환함
+     */
+    @GetMapping("/metropolitan")
+    fun getMetropolitan() : String {
+        return "Hello World"
+    }
 }
