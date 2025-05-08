@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController
  */
 @RestController
 @RequestMapping("/v1/regions")
-class RegionsController {
+class RegionsController() {
     /**
      * 모든 광역지방자치단체 이름을 반환함
      */

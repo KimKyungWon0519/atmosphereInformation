@@ -7,4 +7,10 @@ import org.springframework.stereotype.Repository
  */
 @Repository
 class RegionsRepository {
+    /**
+     * 모든 광역지방자치단체의 이름을 반환함
+     */
+    fun getMetropolitan() {
+
+    }
 }
