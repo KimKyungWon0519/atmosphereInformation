@@ -29,9 +29,18 @@ class LocalGovernmentCoordinatesService(private val excelService: ExcelService) 
 
     /**
      * 모든 광역지방자치단체의 이름을 반환
+     *
+     * @return
+     * Set<String>
+     *
+     * 중복 제거된 모든 광역지방자치단체 데이터
      */
-    fun getAllMetropolitan() {
+    fun getAllMetropolitan(): Set<String> {
+        val filterData: List<Row> = sheet.filter { row ->
+            row.getCell(3).isBlank()
+        }
 
+        return filterData.map { it.getCell(2).toString() }.toSet()
     }
 
     /**
