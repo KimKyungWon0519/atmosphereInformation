@@ -29,7 +29,6 @@ class WeatherController(private val weatherRepository: WeatherRepository) {
 
         return ResponseEntity.ok(
             mapOf(
-                "time" to dateTime,
                 "status" to 200,
                 "data" to cityWeatherObservations
             )
@@ -59,7 +58,6 @@ class WeatherController(private val weatherRepository: WeatherRepository) {
 
         return ResponseEntity.ok(
             mapOf(
-                "time" to dateTime,
                 "status" to 200,
                 "data" to cityWeatherObservations
             )
