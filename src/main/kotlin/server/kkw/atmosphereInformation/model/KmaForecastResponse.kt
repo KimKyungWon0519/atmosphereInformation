@@ -82,5 +82,5 @@ data class Item(
     val category: String,
     val nx: Long,
     val ny: Long,
-    val obsrValue: String,
+    val obsrValue: Double,
 )
