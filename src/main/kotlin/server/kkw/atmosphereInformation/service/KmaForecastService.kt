@@ -35,10 +35,10 @@ class KmaForecastService(private val kmaForecastApi: KmaForecastApi) {
             pageNo, baseDate, baseTime, nx, ny
         )
 
-        return when(kmaForecastResponse.header.resultCode) {
+        return when (kmaForecastResponse.header.resultCode) {
             "00" -> kmaForecastResponse
             "03" -> throw APIRequestException(200, kmaForecastResponse.header.resultMsg)
-            else -> throw  APIRequestException(500, kmaForecastResponse.header.resultMsg)
+            else -> throw APIRequestException(500, kmaForecastResponse.header.resultMsg)
         }
     }
 }

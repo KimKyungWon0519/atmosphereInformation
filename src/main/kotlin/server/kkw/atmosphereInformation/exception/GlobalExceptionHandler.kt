@@ -19,10 +19,12 @@ class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception::class)
     fun handleAnyException(e: Exception): ResponseEntity<Map<String, Any>> {
+        val message = e.message ?: "Unknown Exception"
+
         val body = mapOf(
             "status" to 500,
-            "error" to "UNKNOWN",
-            "message" to "Unknown Error"
+            "error" to e.javaClass,
+            "message" to message
         )
         return ResponseEntity.status(500).body(body)
     }
