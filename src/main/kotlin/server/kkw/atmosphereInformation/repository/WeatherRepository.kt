@@ -81,7 +81,7 @@ class WeatherRepository(
     private suspend fun getNowWeather(
         localGovernmentCoordinate: LocalGovernmentCoordinate, baseDate: String, baseTime: String
     ): WeatherObservation {
-        val result = kmaForecastService.getUltraSrtNcst(
+        val response = kmaForecastService.getUltraSrtNcst(
             baseDate = baseDate,
             baseTime = baseTime,
             pageNo = 1,
@@ -89,12 +89,6 @@ class WeatherRepository(
             ny = localGovernmentCoordinate.y
         )
 
-        return if (result.isSuccess && result.getOrNull() != null) {
-            val kmaForecastResponse = result.getOrNull()!!
-
-            kmaForecastResponse.body.items.toWeatherObservation(localGovernmentCoordinate.name)
-        } else {
-            WeatherObservation(localGovernmentCoordinate.name, mapOf())
-        }
+        return response.body.items.toWeatherObservation(localGovernmentCoordinate.name)
     }
 }

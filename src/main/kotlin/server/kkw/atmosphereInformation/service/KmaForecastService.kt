@@ -1,9 +1,7 @@
 package server.kkw.atmosphereInformation.service
 
-import okhttp3.ResponseBody.Companion.toResponseBody
 import org.springframework.stereotype.Service
-import retrofit2.HttpException
-import retrofit2.Response
+import server.kkw.atmosphereInformation.exception.APIRequestException
 import server.kkw.atmosphereInformation.model.KmaForecastResponse
 
 /**
@@ -32,23 +30,15 @@ class KmaForecastService(private val kmaForecastApi: KmaForecastApi) {
         baseTime: String,
         nx: Short,
         ny: Short,
-    ): Result<KmaForecastResponse> {
-        try {
-            val kmaForecastResponse = kmaForecastApi.getUltraSrtNcst(
-                pageNo, baseDate, baseTime, nx, ny
-            )
+    ): KmaForecastResponse {
+        val kmaForecastResponse = kmaForecastApi.getUltraSrtNcst(
+            pageNo, baseDate, baseTime, nx, ny
+        )
 
-            if (kmaForecastResponse.header.resultCode != "00") {
-                throw HttpException(
-                    Response.error<KmaForecastResponse>(
-                        400, kmaForecastResponse.rawResponse.toResponseBody()
-                    )
-                )
-            }
-
-            return Result.success(kmaForecastResponse)
-        } catch (e: Exception) {
-            return Result.failure(e)
+        return when(kmaForecastResponse.header.resultCode) {
+            "00" -> kmaForecastResponse
+            "03" -> throw APIRequestException(200, kmaForecastResponse.header.resultMsg)
+            else -> throw  APIRequestException(500, kmaForecastResponse.header.resultMsg)
         }
     }
 }
