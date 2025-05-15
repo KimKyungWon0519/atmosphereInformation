@@ -20,7 +20,11 @@ class WeatherController(private val weatherRepository: WeatherRepository) {
      */
     @GetMapping("metropolitan/all/now")
     suspend fun allMetropolitanNowWeather(): ResponseEntity<Map<String, Any>> {
-        val dateTime = LocalDateTime.now()
+        var dateTime = LocalDateTime.now()
+
+        if(dateTime.minute < 10) {
+            dateTime = dateTime.minusMinutes(10)
+        }
 
         val cityWeatherObservations = weatherRepository.getAllMetropolitanNowWeather(
             baseDate = DateTimeFormatter.ofPattern("yyyyMMdd").format(dateTime),
