@@ -34,6 +34,7 @@ class WeatherController(private val weatherRepository: WeatherRepository) {
         return ResponseEntity.ok(
             mapOf(
                 "status" to 200,
+                "base_datetime" to DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH':00'").format(dateTime),
                 "data" to cityWeatherObservations
             )
         )
